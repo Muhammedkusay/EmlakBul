@@ -1,57 +1,63 @@
-# -------------------------
-# Build stage (for assets)
-# -------------------------
-FROM node:18 AS frontend
+# Stage 1: Build assets using Node
+FROM node:20 AS node-builder
 
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
-COPY resources resources
-COPY vite.config.js .
-COPY tailwind.config.js .
-COPY postcss.config.js .
-COPY public public
-
+COPY . .
 RUN npm run build
 
-# -------------------------
-# Backend stage
-# -------------------------
+
+# Stage 2: Laravel PHP + Nginx + PHP-FPM
 FROM php:8.2-fpm
 
-# Install system deps
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git curl unzip zip libpq-dev libonig-dev libxml2-dev nginx \
-    && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
+    nginx \
+    git \
+    curl \
+    unzip \
+    zip \
+    libpq-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-install pdo pdo_pgsql mbstring tokenizer xml ctype bcmath zip
 
-# Set working dir
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy Laravel project
+# Copy project files
 COPY . .
 
-# Ensure views are copied explicitly (critical!)
-COPY resources/views resources/views
-
-# Copy built frontend assets
-COPY --from=frontend /app/public/build public/build
-
-# Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader
+# Copy built assets from node stage
+COPY --from=node-builder /app/public/build ./public/build
 
 # Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# Expose HTTP port
-EXPOSE 80
+# Laravel setup
+RUN composer install --no-dev --optimize-autoloader \
+    && php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear \
+    && php artisan config:cache \
+    && php artisan route:cache
 
+# Copy nginx config
 COPY nginx.conf /etc/nginx/sites-enabled/default
 
-# Start Laravel and services
-CMD php artisan config:cache \
- && php artisan route:cache \
- && service nginx start \
- && php-fpm
+# Expose port 80
+EXPOSE 80
+
+# Start both nginx and php-fpm
+CMD service nginx start && php-fpm
