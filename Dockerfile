@@ -48,6 +48,8 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Expose HTTP port
 EXPOSE 80
 
+COPY nginx.conf /etc/nginx/sites-enabled/default
+
 # Start Laravel and services
 CMD php artisan config:cache \
  && php artisan route:cache \
