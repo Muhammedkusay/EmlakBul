@@ -1,63 +1,27 @@
-# ----------------------------
-# 🐘 Backend Stage: Laravel PHP + Composer
-# ----------------------------
+
 FROM php:8.2-fpm
 
-# Install required PHP extensions (without tokenizer)
+# Install system dependencies including nginx
 RUN apt-get update && apt-get install -y \
-    git curl unzip zip libpq-dev libonig-dev libxml2-dev \
+    nginx libpq-dev libonig-dev libxml2-dev curl zip unzip git \
     && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
+# Copy your application code
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# ----------------------------
-# ⚡ Frontend Stage: Vite + Tailwind + FilePond/Flowbite
-# ----------------------------
-FROM node:18-alpine AS frontend
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/sites-enabled/default
 
-WORKDIR /app
-COPY . .
+# Expose port 80 for HTTP traffic
+EXPOSE 80
 
-# Install and build frontend assets
-RUN npm install && npm run build
-
-# ----------------------------
-# 🚀 Final Production Image
-# ----------------------------
-FROM php:8.2-fpm
-
-# Reinstall PHP extensions (without tokenizer)
-RUN apt-get update && apt-get install -y \
-    git curl unzip zip libpq-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
-
-# Install Composer again
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy backend code from backend stage
-COPY --from=0 /var/www/html /var/www/html
-
-# Copy frontend build assets
-COPY --from=frontend /app/public/build /var/www/html/public/build
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port 9000
-EXPOSE 9000
-
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Start nginx and php-fpm together
+CMD service nginx start && php-fpm
