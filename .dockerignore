@@ -1,8 +1,3 @@
 vendor
-storage/app/*
-storage/framework/*
-storage/logs/*
 .git
 .gitignore
-public/hot
-public/storage
