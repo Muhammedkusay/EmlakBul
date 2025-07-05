@@ -167,7 +167,7 @@
                 </p>
                 <div class="flex gap-2 pt-8">
                     <a href="{{route('posts.create')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-white bg-blue-700 hover:bg-blue-800">Hemen İlan Ver</a>
-                    <a href="{{route('register')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-slate-600 border border-gray-200 hover:bg-gray-100">Üye Ol</a>
+                    <a href="{{route('user-register.get')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-slate-600 border border-gray-200 hover:bg-gray-100">Üye Ol</a>
                 </div>
             </div>
             <div class="w-4/5">
@@ -225,7 +225,7 @@
                 </p>
                 <div class="flex gap-2 pt-8">
                     <a href="{{route('posts.create')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-white bg-blue-700 hover:bg-blue-800">Hemen İlan Ver</a>
-                    <a href="{{route('register')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-slate-600 border border-gray-200 hover:bg-gray-100">Üye Ol</a>
+                    <a href="{{route('user-register.get')}}" class="block py-2 px-4 text-[16px] rounded-md shadow text-slate-600 border border-gray-200 hover:bg-gray-100">Üye Ol</a>
                 </div>
             </div>
             <div class="w-4/5">

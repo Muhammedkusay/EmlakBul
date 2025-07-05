@@ -71,7 +71,7 @@ class PostController extends Controller
         $user = Auth::user();
 
         if($user) return view('posts.create')->with(['user' => $user]);
-        else return to_route('login');
+        else return to_route('login.get');
     }
 
     public function store(Request $request)

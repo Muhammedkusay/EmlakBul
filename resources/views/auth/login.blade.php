@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="{{ route('login') }}" method="POST" class="max-w-sm mx-auto sm:max-w-lg m-5 mt-8 p-8 rounded-md bg-white shadow border border-gray-100">
+<form action="{{ route('login.post') }}" method="POST" class="max-w-sm mx-auto sm:max-w-lg m-5 mt-8 p-8 rounded-md bg-white shadow border border-gray-100">
     
     @csrf
 
@@ -85,7 +85,7 @@
 
     <input type="submit" value="Giriş Yap" class="cursor-pointer shadow-md text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:mr-3 mr-0 sm:mb-0 mb-4 w-full sm:w-auto px-5 py-2.5 text-center ">
     <p class="inline">
-        Üye değil misiniz? <a href="{{ route('register') }}" class="underline text-blue-700">Üye Ol</a>
+        Üye değil misiniz? <a href="{{ route('user-register.get') }}" class="underline text-blue-700">Üye Ol</a>
     </p>
 </form>
   

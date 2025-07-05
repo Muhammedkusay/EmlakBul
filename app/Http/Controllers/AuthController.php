@@ -54,7 +54,7 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if($user) {
-                return to_route('register')->with('error', 'Girdiğiniz bilgiler başka kişi tarafından kullanılmaktadır');
+                return to_route('user-register.get')->with('error', 'Girdiğiniz bilgiler başka kişi tarafından kullanılmaktadır');
             }
 
             $user = User::create([
@@ -65,8 +65,8 @@ class AuthController extends Controller
                 'kullanici_tipi' => $request->kullanici_tipi,
             ]);
 
-            if($user) return to_route('login')->with('success', 'Kayıt başarıyla gerçekleştirildi');
-            else return to_route('register')->with('error', 'Kayıt işlemi esnasında bir hata oluştu');
+            if($user) return to_route('login.get')->with('success', 'Kayıt başarıyla gerçekleştirildi');
+            else return to_route('user-register.get')->with('error', 'Kayıt işlemi esnasında bir hata oluştu');
 
         }
         
@@ -115,7 +115,7 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if($user) {
-                return to_route('register')->with('error', 'Girdiğiniz bilgiler başka kullanıcı tarafından kullanılmaktadır');
+                return to_route('user-register.get')->with('error', 'Girdiğiniz bilgiler başka kullanıcı tarafından kullanılmaktadır');
             }
 
             // store avatar
@@ -143,8 +143,8 @@ class AuthController extends Controller
             Storage::deleteDirectory('images/tmp/' . $temporary_image->folder);
             $temporary_image->delete();
 
-            if($user) return to_route('login')->with('success', 'Kayıt başarıyla gerçekleştirildi');
-            else return to_route('register')->with('error', 'Kayıt işlemi esnasında bir hata oluştu');
+            if($user) return to_route('login.get')->with('success', 'Kayıt başarıyla gerçekleştirildi');
+            else return to_route('user-register')->with('error', 'Kayıt işlemi esnasında bir hata oluştu');
 
         }
 
@@ -165,10 +165,10 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if( !$user )
-            return to_route('login')->with('error', 'Kullanıcı bulunmadı');
+            return to_route('login.get')->with('error', 'Kullanıcı bulunmadı');
 
         if( !Hash::check($request->password, $user->password) )
-            return to_route('login')->with('error', 'Hatalı şifre');
+            return to_route('login.get')->with('error', 'Hatalı şifre');
 
         Auth::login($user);
 

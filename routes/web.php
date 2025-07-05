@@ -39,10 +39,10 @@ Route::post('/tmp-upload', [UploadController::class, 'upload'])->name('tmp-uploa
 Route::delete('/tmp-delete', [UploadController::class, 'delete'])->name('tmp-delete');
 
 // Auth
-Route::get('/register', function() { return view('auth.register'); })->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/register', function() { return view('auth.register'); })->name('user-register.get');
+Route::post('/register', [AuthController::class, 'register'])->name('user-register.post');
 
-Route::get('/login', function() { return view('auth.login'); })->name('login');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
+Route::get('/login', function() { return view('auth.login'); })->name('login.get');
+Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logoutPost'])->name('logout');
