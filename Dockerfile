@@ -34,7 +34,6 @@ COPY . .
 
 # Ensure views are copied explicitly (critical!)
 COPY resources/views resources/views
-COPY resources/lang resources/lang
 
 # Copy built frontend assets
 COPY --from=frontend /app/public/build public/build
