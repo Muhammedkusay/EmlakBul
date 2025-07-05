@@ -60,5 +60,5 @@ RUN composer install --no-dev --optimize-autoloader \
     && php artisan config:cache \
     && php artisan route:cache \
 
-EXPOSE 6543
-CMD php artisan serve --host=0.0.0.0 --port=6543
+EXPOSE 8080
+CMD php artisan serve --host=0.0.0.0 --port=8080
