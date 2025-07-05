@@ -1,0 +1,30 @@
+# Node modules (frontend)
+node_modules
+
+# Vendor (Laravel dependencies — built inside Docker)
+vendor
+
+# Storage logs and cache
+storage/app/*
+storage/framework/*
+storage/logs/*
+
+# Laravel env and config files (optional if you’re setting them in Render)
+.env
+.env.example
+
+# Git and IDE/editor files
+.git
+.gitignore
+*.swp
+*.lock
+*.log
+.DS_Store
+
+# Build artifacts
+/public/build
+/public/hot
+/public/storage
+npm-debug.log
+yarn-debug.log
+yarn-error.log
