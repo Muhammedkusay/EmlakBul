@@ -1,12 +1,12 @@
 # ----------------------------
 # 🐘 Backend Stage: Laravel PHP + Composer
 # ----------------------------
-FROM php:8.2-fpm AS backend
+FROM php:8.2-fpm
 
-# Install required PHP extensions
+# Install required PHP extensions (without tokenizer)
 RUN apt-get update && apt-get install -y \
     git curl unzip zip libpq-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring tokenizer xml ctype bcmath
+    && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -36,10 +36,10 @@ RUN npm install && npm run build
 # ----------------------------
 FROM php:8.2-fpm
 
-# Reinstall PHP extensions
+# Reinstall PHP extensions (without tokenizer)
 RUN apt-get update && apt-get install -y \
     git curl unzip zip libpq-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring tokenizer xml ctype bcmath
+    && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
 
 # Install Composer again
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -47,16 +47,16 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy built Laravel backend from backend stage
-COPY --from=backend /var/www/html /var/www/html
+# Copy backend code from backend stage
+COPY --from=0 /var/www/html /var/www/html
 
-# Copy compiled frontend assets from frontend stage
+# Copy frontend build assets
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Ensure correct permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port for Render
+# Expose port 9000
 EXPOSE 9000
 
 # Start PHP-FPM
