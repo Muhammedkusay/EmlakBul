@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('balkon')->nullable();
             $table->string('teras')->nullable();
             $table->string('cephe')->nullable();
-            $table->unsignedBigInteger('post_id');
+            $table->bigInteger('post_id');
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

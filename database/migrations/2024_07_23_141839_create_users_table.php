@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('kullanici_tipi');
-            $table->unsignedBigInteger('tel')->nullable();
+            $table->bigInteger('tel')->nullable();
             $table->string('il')->nullable();
             $table->string('ilce')->nullable();
             $table->string('avatar')->nullable();

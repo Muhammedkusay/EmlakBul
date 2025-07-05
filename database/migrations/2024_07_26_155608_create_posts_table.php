@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->unsignedBigInteger('tel_1');
-            $table->unsignedBigInteger('tel_2')->nullable();
-            $table->unsignedBigInteger('fiyat');
+            $table->bigInteger('tel_1');
+            $table->bigInteger('tel_2')->nullable();
+            $table->bigInteger('fiyat');
             $table->string('kategori');
             $table->string('emlak_turu');
             $table->string('yayin_tipi');
-            $table->unsignedBigInteger('user_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
