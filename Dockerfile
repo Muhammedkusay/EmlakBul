@@ -1,6 +1,6 @@
-# ----------------------------
-# 🧱 1. Backend Stage (PHP + Composer)
-# ----------------------------
+# -----------------------------------
+# 🧱 1. Backend Stage (Composer + Laravel)
+# -----------------------------------
 FROM php:8.2-fpm as backend
 
 RUN apt-get update && apt-get install -y \
@@ -14,17 +14,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel cache setup
-RUN php artisan config:clear \
- && php artisan route:clear \
- && php artisan view:clear \
- && php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:cache
-
-# ----------------------------
+# -----------------------------------
 # 🎨 2. Frontend Stage (Vite + Tailwind)
-# ----------------------------
+# -----------------------------------
 FROM node:18-alpine as frontend
 
 WORKDIR /app
@@ -32,12 +24,12 @@ COPY . .
 
 RUN npm install && npm run build
 
-# ----------------------------
-# 🚀 3. Production Stage (Nginx + PHP-FPM)
-# ----------------------------
+# -----------------------------------
+# 🚀 3. Final Stage (PHP-FPM + Nginx)
+# -----------------------------------
 FROM php:8.2-fpm
 
-# Install nginx and PHP extensions
+# Install Nginx and PHP extensions
 RUN apt-get update && apt-get install -y \
     nginx libpq-dev libonig-dev libxml2-dev curl unzip zip git \
     && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath
@@ -47,20 +39,24 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy backend (Laravel code)
+# Copy backend Laravel app
 COPY --from=backend /var/www/html /var/www/html
 
-# Copy compiled assets from frontend
+# Copy frontend compiled assets
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Copy nginx configuration
+# Copy Nginx config
 COPY nginx.conf /etc/nginx/sites-enabled/default
 
-# Set proper permissions
+# Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Expose port 80 for Render
+# Expose HTTP port
 EXPOSE 80
 
-# Start nginx and php-fpm
-CMD service nginx start && php-fpm
+# 🧠 Laravel caches run at runtime, after app is ready
+CMD php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache \
+ && service nginx start \
+ && php-fpm
