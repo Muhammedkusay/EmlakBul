@@ -17,7 +17,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Install PHP dependencies (without dev for production)
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
 
 # Generate optimized autoload files (optional, composer does this in --optimize-autoloader)
 RUN composer dump-autoload -o
