@@ -1,4 +1,4 @@
-# Stage 1: NodeJS for frontend assets
+# Stage 1: Build frontend assets
 FROM node:20 as node-builder
 
 WORKDIR /app
@@ -10,10 +10,10 @@ COPY . .
 RUN npm run build
 
 
-# Stage 2: Laravel backend with PHP
+# Stage 2: Laravel with PHP-FPM
 FROM php:8.2-fpm
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -25,24 +25,34 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring xml ctype bcmath zip
+    libonig-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        pdo \
+        pdo_pgsql \
+        mbstring \
+        xml \
+        ctype \
+        bcmath \
+        zip \
+        gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy app files
+# Copy application source
 COPY . .
 
-# Copy built assets
+# Copy built frontend assets
 COPY --from=node-builder /app/public/build ./public/build
 
-# Permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Install Laravel dependencies
+# Install PHP dependencies and cache config
 RUN composer install --no-dev --optimize-autoloader \
     && php artisan config:clear \
     && php artisan route:clear \
