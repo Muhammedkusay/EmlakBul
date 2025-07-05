@@ -40,26 +40,32 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy application source
+# Copy application code
 COPY . .
 
 # Copy built frontend assets
 COPY --from=node-builder /app/public/build ./public/build
 
-# Set permissions
+# Fix permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+    && chmod -R 755 /var/www/html \
+    && mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
-# Install PHP dependencies and cache config
-RUN composer install --no-dev --optimize-autoloader \
-    && php artisan config:clear \
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Laravel cache clear/build
+RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear \
     && php artisan config:cache \
-    && php artisan route:cache 
+    && php artisan route:cache \
+    && php artisan view:cache
 
 EXPOSE 8080
 
-CMD php artisan serve --host=0.0.0.0 --port=8080
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
