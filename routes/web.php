@@ -7,6 +7,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\FavoriteController;
+use Illuminate\Support\Facades\DB;
+
+Route::get('/db-test', function () {
+    try {
+        DB::connection()->getPdo();
+        return '✅ Successfully connected to the database.';
+    } catch (\Exception $e) {
+        return '❌ Could not connect to the database. Error: ' . $e->getMessage();
+    }
+});
 
 Route::get('/', function () {
     return to_route('feed');
