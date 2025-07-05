@@ -8,7 +8,6 @@ let cities = [];
 let citiesLatLng = [];
 let districts = [];
 
-// add cities to the dom
 function addCities() {
     let i = 0;
     cities.forEach(city => {
@@ -22,7 +21,6 @@ function addCities() {
     });
 }
 
-// add districts to the dom
 function addDistricts() {
     document.getElementById('ilce').innerHTML = "";
 
@@ -34,7 +32,6 @@ function addDistricts() {
     });
 }
 
-// implement the function to access all cities
 async function getCities() {
 
     await fetch(`https://turkiyeapi.dev/api/v1/provinces`)
@@ -54,7 +51,6 @@ async function getCities() {
 
 }
 
-// implement the function to access all districts
 async function getDistricts(city) {
 
     await fetch(`https://turkiyeapi.dev/api/v1/provinces?name=${city}`)
@@ -72,7 +68,6 @@ async function getDistricts(city) {
 
 }
 
-// call the function
 getCities();
 
 $(document).ready(function() {
@@ -91,7 +86,6 @@ const loader = new Loader({
   });
 
 loader.load().then(async () => {
-    // Request needed libraries.
     const { Map } = await google.maps.importLibrary("maps");
     const map = new Map(document.getElementById("map_container"), {
       zoom: 13,
@@ -99,13 +93,10 @@ loader.load().then(async () => {
       center:  mapCenter ?? { lat: 41.015137 , lng: 28.979530}
     });
     
-    // Create the initial InfoWindow.
     let infoWindow = new google.maps.InfoWindow();
   
     infoWindow.open(map);
-    // Configure the click listener.
     map.addListener("click", (mapsMouseEvent) => {
-      // Close the current InfoWindow.
       infoWindow.close();
 
       infoWindow.setContent(

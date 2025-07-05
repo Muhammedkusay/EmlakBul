@@ -21,7 +21,6 @@ function addEmlakTuru() {
     });
 }
 
-// add spesific features
 function hideSections() {
     $('.konut').hide();
     $('.isyeri').hide();

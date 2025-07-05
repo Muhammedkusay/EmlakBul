@@ -2,7 +2,6 @@
 let cities = [];
 let districts = [];
 
-// add cities to the dom
 function addCities() {
     cities.forEach(city => {
         let option = document.createElement('option');
@@ -12,7 +11,6 @@ function addCities() {
     });
 }
 
-// add districts to the dom
 function addDistricts() {
     document.getElementById('ilce').innerHTML = "";
 
@@ -24,7 +22,6 @@ function addDistricts() {
     });
 }
 
-// implement the function to access all cities
 function getCities() {
 
     fetch(`https://turkiyeapi.dev/api/v1/provinces`)
@@ -39,11 +36,9 @@ function getCities() {
     })
 
 }
-// call the function
 getCities();
 
 
-// implement the function to access all districts
 function getDistricts(city) {
 
     fetch(`https://turkiyeapi.dev/api/v1/provinces?name=${city}`)
