@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('arazi_egimi');
             $table->string('hukuki_durumu');
             $table->string('pazarlik_durumu');
-            $table->bigInteger('post_id');
+            $table->unsignedBigInteger('post_id');
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

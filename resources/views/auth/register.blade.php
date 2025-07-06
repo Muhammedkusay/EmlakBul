@@ -263,7 +263,7 @@
     <div class="mt-7">
         <input type="submit" value="Kaydet" class="shadow-md cursor-pointer ms:mr-3 mr-3 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 sm:mb-0 mb-2 text-center">
         <p class="inline">
-            Üye misiniz? <a href="{{ route('login.get') }}" class="underline text-blue-700">Giriş Yap</a>
+            Üye misiniz? <a href="{{ route('login') }}" class="underline text-blue-700">Giriş Yap</a>
         </p>
     </div>
 

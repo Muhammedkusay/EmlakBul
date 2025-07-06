@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('adres');
             $table->float('lat');
             $table->float('lng');
-            $table->bigInteger('post_id');
+            $table->unsignedBigInteger('post_id');
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

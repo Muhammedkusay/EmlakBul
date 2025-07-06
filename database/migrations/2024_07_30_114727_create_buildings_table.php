@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('guvenlik');
             $table->string('asansor');
             $table->string('otopark');
-            $table->bigInteger('post_id');
+            $table->unsignedBigInteger('post_id');
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

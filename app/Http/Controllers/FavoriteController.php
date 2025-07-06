@@ -24,7 +24,7 @@ class FavoriteController extends Controller
         $favorite_posts_id = [];
 
         if(!Favorite::exists()) {
-            return view('favorites.index', ['user' => $user, 'posts' => $posts, 'features' => $features, 'lands' => $lands, 'locations' => $locations, 'images' => $images]);   
+            return view('favorites.index', ['user' => $user, 'posts' => [], 'features' => [], 'lands' => [], 'locations' => [], 'images' => []]);   
         }
 
         $favorite_posts = Favorite::where('user_id', $user->id)->get();
@@ -58,7 +58,7 @@ class FavoriteController extends Controller
         foreach($lands as $land) {
             array_push($land_images, Image::where('post_id', $land->id)->get());
         }
-
+        
         return view('favorites.index', ['user' => $user, 'posts' => $posts, 'lands' => $lands, 'post_images' => $post_images, 'land_images' => $land_images]);
 
     }

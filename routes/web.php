@@ -52,7 +52,7 @@ Route::delete('/tmp-delete', [UploadController::class, 'delete'])->name('tmp-del
 Route::get('/register', function() { return view('auth.register'); })->name('user-register.get');
 Route::post('/register', [AuthController::class, 'register'])->name('user-register.post');
 
-Route::get('/login', function() { return view('auth.login'); })->name('login.get');
+Route::get('/login', function() { return view('auth.login'); })->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logoutPost'])->name('logout');

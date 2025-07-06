@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('post_id');
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts');

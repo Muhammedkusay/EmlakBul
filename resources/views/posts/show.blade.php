@@ -380,12 +380,12 @@
             <div class="w-full ml-0 mt-4 lg:ml-4">
                 {{-- add to favorite --}}
                 @if($favorite_post)
-                    <a @auth href="{{route('favorites.delete', [$user->id, $post->id])}}" @endauth href="{{route('login.get')}}" @guest @endguest class="favorite-btn w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                    <a @auth href="{{route('favorites.delete', [$user->id, $post->id])}}" @endauth href="{{route('login')}}" @guest @endguest class="favorite-btn w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                         <div class="favorite-heart-2 text-2xl mr-4 mt-1"><i class="fa-solid fa-heart text-red-600"></i></div>
                         <p class="scale-110">Favorilere Eklendi</p>
                     </a>
                 @else
-                    <a @auth href="{{route('favorites.store', [$user->id, $post->id])}}" @endauth href="{{route('login.get')}}" @guest @endguest class="favorite-btn w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                    <a @auth href="{{route('favorites.store', [$user->id, $post->id])}}" @endauth href="{{route('login')}}" @guest @endguest class="favorite-btn w-full flex items-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                         <div class="favorite-heart-1 text-2xl mr-4 mt-1"><i class="fa-regular fa-heart text-gray-600"></i></div>
                         <p class="scale-110">Favorilere Ekle</p>
                     </a>
