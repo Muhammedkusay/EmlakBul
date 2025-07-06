@@ -10,26 +10,26 @@ COPY . .
 RUN npm run build
 
 
-# Stage 2: Laravel with PHP-FPM
+# Stage 2: Laravel with PHP-FPM and MySQL support
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     unzip \
     zip \
-    libpq-dev \
     libxml2-dev \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libonig-dev \
+    default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
-        pdo_pgsql \
+        pdo_mysql \
         mbstring \
         xml \
         ctype \
@@ -49,7 +49,7 @@ COPY . .
 # Copy built frontend assets
 COPY --from=node-builder /app/public/build ./public/build
 
-# Fix permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache \
@@ -58,7 +58,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel cache clear/build
+# Laravel cache and config
 RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear \
