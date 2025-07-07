@@ -20,9 +20,6 @@
             <h1 class="text-5xl pb-3 text-slate-600 font-semibold">Hata 500</h1>
             <h2 class="text-2xl text-slate-400">Sunucu Hatası</h2>
         </div>
-        <div class="w-full md:w-1/4 mx-auto pt-5">
-            <img src="{{URL('images/error_message.jpg')}}" alt="">
-        </div>
     </div>
 
 </body>
