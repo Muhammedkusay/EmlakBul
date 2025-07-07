@@ -64,7 +64,8 @@ RUN php artisan config:clear \
     && php artisan view:clear \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache
+    && php artisan view:cache \
+    && php artisan migrate --force  # <- This line is new
 
 EXPOSE 8080
 
